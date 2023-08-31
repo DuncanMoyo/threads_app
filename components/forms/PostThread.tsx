@@ -37,6 +37,7 @@ const PostThread = ({ userId }: Props) => {
     await createThread({
       text: values.thread,
       author: userId,
+      // @ts-ignore
       communityId: null,
       path: pathname,
     });
