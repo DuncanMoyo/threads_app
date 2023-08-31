@@ -11,7 +11,7 @@ type Props = {};
 const LeftSidebar = (props: Props) => {
   const router = useRouter();
   const pathname = usePathname();
-  const userId = useAuth();
+  const { userId } = useAuth();
   return (
     <section className="custom-scrollbar leftsidebar">
       <div className="flex w-full flex-1 flex-col gap-6 px-6">
@@ -21,6 +21,8 @@ const LeftSidebar = (props: Props) => {
             pathname === link.route;
 
           if (link.route === "/profile") link.route = `${link.route}/${userId}`;
+          // console.log('without conversion', link.route);
+
           return (
             <Link
               href={link.route}
