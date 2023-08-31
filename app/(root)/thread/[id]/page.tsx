@@ -2,7 +2,7 @@ import { ThreadCard } from "@/components/cards";
 import { Comments } from "@/components/forms";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { fetchCurrentUserWithRetry } from "@/lib/fetchCurrentUserWithRetry";
+import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 const Page = async ({ params }: Props) => {
   if (!params.id) return null;
 
-  const user = await fetchCurrentUserWithRetry(3);
+  const user = await currentUser();
   if (!user) return null;
 
   const userInfo = await fetchUser(user.id);

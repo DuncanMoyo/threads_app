@@ -1,12 +1,12 @@
 import { PostThread } from "@/components/forms";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { fetchCurrentUserWithRetry } from "@/lib/fetchCurrentUserWithRetry";
+import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 
 
 async function Page() {
-  const user = await fetchCurrentUserWithRetry(3);
+  const user = await currentUser();
   // console.log("🚀 ~ file: page.tsx:8 ~ Page ~ user:", user)
 
   if (!user) return null;

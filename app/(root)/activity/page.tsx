@@ -1,11 +1,11 @@
 import { fetchUser, getActivity } from "@/lib/actions/user.actions";
-import { fetchCurrentUserWithRetry } from "@/lib/fetchCurrentUserWithRetry";
+import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 async function Page() {
-  const user = await fetchCurrentUserWithRetry(3);
+  const user = await currentUser();
   if (!user) return null;
   const userInfo = await fetchUser(user.id);
   if (!userInfo?.onboarded) redirect("/onboarding");

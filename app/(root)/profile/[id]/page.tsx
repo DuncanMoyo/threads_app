@@ -2,7 +2,7 @@ import { ProfileHeader, ThreadsTab } from "@/components/shared";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { fetchCurrentUserWithRetry } from "@/lib/fetchCurrentUserWithRetry";
+import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 async function Page({ params }: Props) {
-  const user = await fetchCurrentUserWithRetry(3);
+  const user = await currentUser();
   // console.log("🚀 ~ file: page.tsx:8 ~ Page ~ user:", user)
 
   if (!user) return null;

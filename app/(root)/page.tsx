@@ -1,9 +1,9 @@
 import { ThreadCard } from "@/components/cards";
 import { fetchPosts } from "@/lib/actions/thread.actions";
-import { fetchCurrentUserWithRetry } from "@/lib/fetchCurrentUserWithRetry";
+import { currentUser } from "@clerk/nextjs";
 
 export default async function Home() {
-  const user = await fetchCurrentUserWithRetry(3);
+  const user = await currentUser();
   const result = await fetchPosts(1, 30);
   // console.log("🚀 ~ file: page.tsx:5 ~ Home ~ result:", result);
 
