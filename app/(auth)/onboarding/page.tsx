@@ -1,26 +1,30 @@
 import { AccountProfile } from "@/components/forms";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 type Props = {};
 
 const Page = async (props: Props) => {
   const user = await currentUser();
 
-  const userInfo = {};
+  if (!user) return null;
+
+  const userInfo = await fetchUser(user.id);
+  if (userInfo?.onboarded) redirect("/");
+
+  // console.log('here', userInfo?.username);
+  // console.log('here too', user?.username);
 
   const userData = {
     id: user?.id,
-    // @ts-ignore
     objectId: userInfo?._id,
-    // @ts-ignore
-    username: userInfo?.username || user?.username,
-    // @ts-ignore
-    name: userInfo?.name || user?.firstName || "",
-    // @ts-ignore
-    bio: userInfo?.bio || "",
-    // @ts-ignore
-    image: userInfo?.image || user?.imageUrl,
+    username: userInfo ? userInfo?.username : user?.username,
+    name: userInfo ? userInfo?.name : user?.firstName || "",
+    bio: userInfo ? userInfo?.bio : "",
+    image: userInfo ? userInfo?.image : user?.imageUrl,
   };
+  
   return (
     <main className="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
       <h1 className="head-text">Onboarding</h1>
@@ -28,7 +32,6 @@ const Page = async (props: Props) => {
         Complete your profile now to use Threads
       </p>
       <section className="mt-9 bg-dark-2 p-10">
-        {/* @ts-ignore */}
         <AccountProfile user={userData} btnTitle="Continue" />
       </section>
     </main>

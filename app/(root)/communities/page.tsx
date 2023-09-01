@@ -1,5 +1,6 @@
-import { UserCard } from "@/components/cards";
-import { fetchUsers, fetchUser } from "@/lib/actions/user.actions";
+import { CommunityCard } from "@/components/cards";
+import { fetchCommunities } from "@/lib/actions/community.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -12,10 +13,8 @@ async function Page() {
   const userInfo = await fetchUser(user.id);
   // console.log("🚀 ~ file: page.tsx:13 ~ Page ~ userInfo:", userInfo)
 
-  // fetch all the users
-
-  const result = await fetchUsers({
-    userId: user.id,
+  // fetch all the communities
+  const result = await fetchCommunities({
     searchString: "",
     pageNumber: 1,
     pageSize: 25,
@@ -29,18 +28,19 @@ async function Page() {
       {/* Seachbar */}
 
       <div className="mt-14 flex flex-col gap-9">
-        {result.users.length === 0 ? (
-          <p className="no-result">No users</p>
+        {result.communities.length === 0 ? (
+          <p className="no-result">No communities</p>
         ) : (
           <>
-            {result.users.map((person) => (
-              <UserCard
-                key={person.id}
-                id={person.id}
-                name={person.username}
-                username={person.username}
-                imgUrl={person.image}
-                personType="User"
+            {result.communities.map((community) => (
+              <CommunityCard
+                key={community.id}
+                id={community.id}
+                name={community.username}
+                username={community.username}
+                imgUrl={community.image}
+                bio={community.bio}
+                members={community.members}
               />
             ))}
           </>
